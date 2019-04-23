@@ -1,24 +1,24 @@
 #!/bin/bash
 
 echo "Running script to create Kafka on Kubernetes cluster"
-echo "Running script to create Kafka on Kubernetes cluster"
 
-export CLUSTER_NAME="k2"
-export RG_NAME="k2"
-export LOCATION="westus2"
+# Set correct values for your subscription
+export CLUSTER_NAME=""
+export RG_NAME=""
+export LOCATION="eastus"
 
 # # Uncomment these lines if you would like to create an AKS cluster
 # echo "Creating resource group"
 # echo ". name:  $RG_NAME"
-# az group create -n $RG_NAME -l $LOCATION -o tsv >> log.txt
+# az group create -n $RG_NAME -l $LOCATION
 
 # echo "Creating AKS cluster"
 # echo ".name: $CLUSTER_NAME"
 # echo ". location: $LOCATION"
-# az aks create -n $CLUSTER_NAME -g $RG_NAME -l $LOCATION --generate-ssh-keys -o tsv >> log.txt # did not work
+# az aks create -n $CLUSTER_NAME -g $RG_NAME -l $LOCATION --generate-ssh-keys
 
 # echo "Setting $CLUSTER_NAME as current context"
-# az aks get-credentials -n $CLUSTER_NAME -g $RG_NAME -o tsv >> log.txt
+# az aks get-credentials -n $CLUSTER_NAME -g $RG_NAME 
 
 export CLUSTER_RG="$(az aks show -g $RG_NAME -n $CLUSTER_NAME --query nodeResourceGroup -o tsv)"
 
@@ -27,7 +27,7 @@ export KAFKA_IP_NAME_1="kafka_ip_1"
 
 echo "Creating public ip"
 echo ". name: $KAFKA_IP_NAME_0"
-az network public-ip create -g $CLUSTER_RG -n $KAFKA_IP_NAME_0 --allocation-method static -o tsv >> log.txt
+az network public-ip create -g $CLUSTER_RG -n $KAFKA_IP_NAME_0 --allocation-method static
 
 KAFKA_IP_0=""
 while [ -z $KAFKA_IP_0 ]; do
@@ -39,7 +39,7 @@ echo "IP created: $KAFKA_IP_0"
 
 echo "Creating public ip"
 echo ". name: $KAFKA_IP_NAME_1"
-az network public-ip create -g $CLUSTER_RG -n $KAFKA_IP_NAME_1 --allocation-method static >> log.txt
+az network public-ip create -g $CLUSTER_RG -n $KAFKA_IP_NAME_1 --allocation-method static 
 
 KAFKA_IP_1=""
 while [ -z $KAFKA_IP_1 ]; do

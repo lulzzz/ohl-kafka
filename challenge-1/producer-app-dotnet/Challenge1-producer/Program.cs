@@ -35,7 +35,7 @@ namespace Challenge1_producer
         private CancellationTokenSource _cancellationTokenSource;
         private CancellationToken _cancellationToken;
 
-        private volatile int _sleepTime = 10; // msec
+        private volatile int _sleepTime = 1000; // msec
 
         public BadgeProducer(string _connectionString, string brokerList, string topic)
         {
@@ -147,12 +147,6 @@ namespace Challenge1_producer
                     if (_cancellationToken.IsCancellationRequested)
                     {
                         break;
-                    }
-
-
-                    if (!_cancellationToken.IsCancellationRequested)
-                    {
-                        await Task.Delay(5000);
                     }
                 }
             }

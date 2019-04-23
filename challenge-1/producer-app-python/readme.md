@@ -94,4 +94,4 @@ Or with environment variables:
 docker run --rm -it -e "SQL_HOST=contoso.databases.windows.net" ... ohkl-py-c1
 ```
 
-Alternatively you can use the prebuilt image available at ``slyons/ohkl-py-c1``, just substitute it in any of the above commands.
+Alternatively you can use the prebuilt image available at ``slyons/ohkl-py-c1-v2``, just substitute it in any of the above commands.

@@ -8,6 +8,6 @@ spec:
   - name: kafka
     image: solsson/kafka:0.11.0.0
     command:
-     - sh
-     - -c
-     - exec tail -f /dev/null
+     - sh
+     - -c
+     - exec tail -f /dev/null

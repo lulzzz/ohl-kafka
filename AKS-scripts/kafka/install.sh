@@ -7,18 +7,18 @@ export CLUSTER_NAME=""
 export RG_NAME=""
 export LOCATION="eastus"
 
-# # Uncomment these lines if you would like to create an AKS cluster
-# echo "Creating resource group"
-# echo ". name:  $RG_NAME"
-# az group create -n $RG_NAME -l $LOCATION
+# Comment these lines if you would like to use existing Kafka cluster
+echo "Creating resource group"
+echo ". name:  $RG_NAME"
+az group create -n $RG_NAME -l $LOCATION
 
-# echo "Creating AKS cluster"
-# echo ".name: $CLUSTER_NAME"
-# echo ". location: $LOCATION"
-# az aks create -n $CLUSTER_NAME -g $RG_NAME -l $LOCATION --generate-ssh-keys
+echo "Creating AKS cluster"
+echo ".name: $CLUSTER_NAME"
+echo ". location: $LOCATION"
+az aks create -n $CLUSTER_NAME -g $RG_NAME -l $LOCATION --generate-ssh-keys
 
-# echo "Setting $CLUSTER_NAME as current context"
-# az aks get-credentials -n $CLUSTER_NAME -g $RG_NAME 
+echo "Setting $CLUSTER_NAME as current context"
+az aks get-credentials -n $CLUSTER_NAME -g $RG_NAME 
 
 export CLUSTER_RG="$(az aks show -g $RG_NAME -n $CLUSTER_NAME --query nodeResourceGroup -o tsv)"
 

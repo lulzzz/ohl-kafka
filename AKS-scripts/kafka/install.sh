@@ -6,7 +6,7 @@ echo "Running script to create Kafka on Kubernetes cluster"
 export CLUSTER_NAME="kafka-k8"
 export RG_NAME="kafka-8"
 export LOCATION="westus2"
-export CLUSTER_RG="$(az aks show -g $RG_NAME -n $CLUSTER_NAME --query nodeResourceGroup -o tsv)"
+
 export KAFKA_IP_NAME_0="kafka-ip-0"
 export KAFKA_IP_NAME_1="kafka-ip-1"
 export KAFKA_IP_NAME_2="kafka-ip-2"
@@ -18,6 +18,8 @@ az aks create -n $CLUSTER_NAME -g $RG_NAME -l $LOCATION --generate-ssh-keys
 az aks get-credentials -n $CLUSTER_NAME -g $RG_NAME --overwrite-existing
 
 echo "Creating public IPs."
+
+export CLUSTER_RG="$(az aks show -g $RG_NAME -n $CLUSTER_NAME --query nodeResourceGroup -o tsv)"
 
 az network public-ip create -g $CLUSTER_RG -n $KAFKA_IP_NAME_0 --allocation-method static
 az network public-ip create -g $CLUSTER_RG -n $KAFKA_IP_NAME_1 --allocation-method static

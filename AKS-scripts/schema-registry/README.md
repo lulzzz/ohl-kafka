@@ -1,10 +1,10 @@
-# How to run:
+# Schema Registry on K8:
 
-helm install --name kafka-schema-registry incubator/schema-registry --set kafka.enabled=false,kafkaStore.overrideBootstrapServers=PLAINTEXT://kafka-headless:9092
+helm install --name kafka-schema-registry incubator/schema-registry --set kafka.enabled=false,kafkaStore.overrideBootstrapServers=PLAINTEXT://kafka-headless:9092,external.enabled=true,external.servicePort=8081
 
-export POD_NAME=$(kubectl get pods --namespace default -l "app=schema-registry,release=kafka-schema-registry" -o jsonpath="{.items[0].metadata.name}")
+Wait for LoadBalancer to provision, get public IP:
+kubectl get svc
 
-kubectl port-forward $POD_NAME 8081
-
+curl -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" --data '{"schema": "{\"type\": \"string\"}"}'  \<PUBLICIP\>:8081/subjects/Kafka-key/versions
 
 https://github.com/confluentinc/schema-registry

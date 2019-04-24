@@ -16,6 +16,6 @@ apt-get install kafkacat
 
 And run:
 
-kafkacat -b <PUBLICIP>:31090 -L
+kafkacat -b \<PUBLICIP\>:31090 -L
 
 You should see your three brokers and all topics.

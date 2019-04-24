@@ -75,7 +75,7 @@ echo "tiller upgrade complete."
 
 echo "installing kafka helm chart"
 
-cat kafka/values.yaml | \
+cat kafka-helm/values.yaml | \
 sed 's/\${KAFKA_IP_0}'"/$KAFKA_IP_0/g" | \
 sed 's/\${KAFKA_IP_1}'"/$KAFKA_IP_1/g" | \
 sed 's/\${KAFKA_IP_2}'"/$KAFKA_IP_2/g" | \

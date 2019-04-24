@@ -98,21 +98,7 @@ namespace Challenge1_producer
         {
             var config = new ProducerConfig();
 
-            if (BrokerList.ToLower().StartsWith("endpoint="))
-            {
-                var tokens = BrokerList.Split(";");
-                string boostrapServers = tokens[0].Substring(14, tokens[0].Length - 14 - 1) + ":9093";
-                config.BootstrapServers = boostrapServers;
-                config.SaslUsername = "$ConnectionString";
-                config.SaslPassword = BrokerList;
-                config.SecurityProtocol = SecurityProtocol.SaslSsl;
-                config.SaslMechanism = SaslMechanism.Plain;
-                config.SslCaLocation = "cacert.pem";
-            }
-            else
-            {
-                config.BootstrapServers = BrokerList;
-            }
+            config.BootstrapServers = BrokerList;
             config.MessageTimeoutMs = 1000;
 
             using (var producer = new ProducerBuilder<string, string>(config).Build())

@@ -9,4 +9,4 @@ echo $PRODUCER_CONFIG > producer.config
 echo $CONSUMER_CONFIG
 echo $PRODUCER_CONFIG
 
-/usr/bin/kafka-mirror-maker --consumer.config /usr/src/mirror-maker/consumer.config --producer.config /usr/src/mirror-maker/producer.config --whitelist=".*"
+/usr/bin/kafka-mirror-maker --consumer.config /usr/src/mirror-maker/consumer.config --producer.config /usr/src/mirror-maker/producer.config

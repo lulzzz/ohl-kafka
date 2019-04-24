@@ -1,4 +1,4 @@
-import logging, configargparse, pymssql, time, pdb, re, json, sys
+import logging, configargparse, pyodbc, time, pdb, re, json, sys
 from threading import Event
 from confluent_kafka import Producer
 from metrology import Metrology
@@ -24,12 +24,17 @@ def get_kafka_parameters(options):
     return producer_config
 
 def get_badge(options):
-    with pymssql.connect(options.sql_host, options.sql_username, options.sql_password, options.sql_db) as conn:
-        with conn.cursor(as_dict=True) as cursor:
+    #with pyodbc.connect(options.sql_host, options.sql_username, options.sql_password, options.sql_db) as conn:
+    with pyodbc.connect(driver='{ODBC Driver 17 for SQL Server}',server=options.sql_host,database=options.sql_db, uid=options.sql_username, pwd=options.sql_password) as conn:
+        with conn.cursor() as cursor:
             last = None
             while stop_event.is_set() is not True:
-                cursor.callproc("Challenge1.GetBadge")
-                res = list(cursor)[0]
+                cursor.execute("{ CALL Challenge1.GetBadge }")
+                columns = [column[0] for column in cursor.description]
+                results = []
+                for row in cursor.fetchall():
+                    results.append(dict(zip(columns, row)))
+                res = results[0]
                 if res == last:
                     return
                 else:

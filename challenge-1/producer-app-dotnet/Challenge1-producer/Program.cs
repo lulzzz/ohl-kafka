@@ -75,7 +75,7 @@ namespace Challenge1_producer
             }
             _logger.Info("Successfully connected to Azure SQL");
 
-            await Task.Run(() => SendBadgeEvent());
+            await SendBadgeEvent();
         }
 
         private async Task<IEnumerable<BadgeEvent>> GetBadgeEvent()
@@ -94,7 +94,7 @@ namespace Challenge1_producer
             };
         }
 
-        private async void SendBadgeEvent()
+        private async Task SendBadgeEvent()
         {
             var config = new ProducerConfig();
 

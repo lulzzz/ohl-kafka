@@ -75,7 +75,7 @@ namespace Challenge1_producer
             }
             _logger.Info("Successfully connected to Azure SQL");
 
-            await Task.Run(() => SendBadgeEvent());
+            await SendBadgeEvent();
         }
 
         private async Task<IEnumerable<BadgeEvent>> GetBadgeEvent()
@@ -94,25 +94,11 @@ namespace Challenge1_producer
             };
         }
 
-        private async void SendBadgeEvent()
+        private async Task SendBadgeEvent()
         {
             var config = new ProducerConfig();
 
-            if (BrokerList.ToLower().StartsWith("endpoint="))
-            {
-                var tokens = BrokerList.Split(";");
-                string boostrapServers = tokens[0].Substring(14, tokens[0].Length - 14 - 1) + ":9093";
-                config.BootstrapServers = boostrapServers;
-                config.SaslUsername = "$ConnectionString";
-                config.SaslPassword = BrokerList;
-                config.SecurityProtocol = SecurityProtocol.SaslSsl;
-                config.SaslMechanism = SaslMechanism.Plain;
-                config.SslCaLocation = "cacert.pem";
-            }
-            else
-            {
-                config.BootstrapServers = BrokerList;
-            }
+            config.BootstrapServers = BrokerList;
             config.MessageTimeoutMs = 1000;
 
             using (var producer = new ProducerBuilder<string, string>(config).Build())

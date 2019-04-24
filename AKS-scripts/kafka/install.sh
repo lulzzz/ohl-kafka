@@ -30,8 +30,8 @@ KAFKA_IP_1="$(az network public-ip show --resource-group $CLUSTER_RG --name $KAF
 KAFKA_IP_2="$(az network public-ip show --resource-group $CLUSTER_RG --name $KAFKA_IP_NAME_2 --query ipAddress)"
 
 echo -e "adding RBAC ServiceAccount and ClusterRoleBinding for tiller\n\n"
-declare timeout=120  #Number of loops before timeout on check on tiller
-declare wait=5 #Number of seconds between to checks on tiller
+export timeout=120  #Number of loops before timeout on check on tiller
+export wait=5 #Number of seconds between to checks on tiller
 
 kubectl create serviceaccount --namespace kube-system tillersa
 if [ $? -ne 0 ]; then
@@ -63,19 +63,13 @@ count=0
 until kubectl get pods --all-namespaces | grep -E "kube-system(\s){3}tiller.*1\/1\s*Running+"
 do
         sleep ${wait}
-        if [ ${count} -gt ${timeout} ]; then
-            printf "Timeout - Waited %s seconds on tiller to be Running\n" "$(($count*$wait))"
-            exit 1
-        fi
-        printf "Waiting for tiller ... %s seconds\n" "$(($count*$wait))"
-        (( ++count ))
 done
 
 echo "tiller upgrade complete."
 
 echo "installing kafka helm chart"
 
-cat kafka/values.yaml | \
+cat kafka-helm/values.yaml | \
 sed 's/\${KAFKA_IP_0}'"/$KAFKA_IP_0/g" | \
 sed 's/\${KAFKA_IP_1}'"/$KAFKA_IP_1/g" | \
 sed 's/\${KAFKA_IP_2}'"/$KAFKA_IP_2/g" | \

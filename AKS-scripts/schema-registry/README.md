@@ -1,4 +1,4 @@
-# Schema Registry on K8:
+# Schema Registry on K8
 
 helm install --name kafka-schema-registry incubator/schema-registry --set kafka.enabled=false,kafkaStore.overrideBootstrapServers=PLAINTEXT://kafka-headless:9092,external.enabled=true,external.servicePort=8081
 
@@ -7,4 +7,4 @@ kubectl get svc
 
 curl -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" --data '{"schema": "{\"type\": \"string\"}"}'  \<PUBLICIP\>:8081/subjects/Kafka-key/versions
 
-https://github.com/confluentinc/schema-registry
+[Schema Registry Confluent Documentation](https://github.com/confluentinc/schema-registry)
